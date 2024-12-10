@@ -1,0 +1,25 @@
+name: Export HLS Playlists
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  export-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set Up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # Use the PHP version of your choice
+
+    - name: Run PHP Script
+      run: |
+        php updatePlaylist.php > exported_playlists.m3u
+        echo "Exported playlist saved to exported_playlists.m3u"
