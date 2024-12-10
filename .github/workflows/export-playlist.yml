@@ -1,10 +1,10 @@
-name: Export and Commit Playlist
+name: Export HLS Playlists
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   export-playlist:
@@ -17,16 +17,15 @@ jobs:
     - name: Set Up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: '8.2' # Use the PHP version of your choice
 
     - name: Run PHP Script
       run: |
         php updatePlaylist.php > exported_playlists.m3u
+        echo "Exported playlist saved to exported_playlists.m3u"
 
-    - name: Commit and Push Playlist
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add exported_playlists.m3u
-        git commit -m "Update exported playlists"
-        git push
+    - name: Upload Exported Playlist
+      uses: actions/upload-artifact@v3
+      with:
+        name: exported_playlists
+        path: exported_playlists.m3u
