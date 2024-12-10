@@ -1,0 +1,30 @@
+name: Run PHP Script to Generate HLS Playlist
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  generate-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # Specify the PHP version to use
+
+    - name: Run PHP Script to Generate Playlist
+      run: |
+        php extract-token.php
+
+    - name: Upload generated playlist
+      uses: actions/upload-artifact@v3
+      with:
+        name: exported_playlists
+        path: exported_playlists.m3u
