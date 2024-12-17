@@ -2,9 +2,9 @@
 
 // Define the input URLs and corresponding episode names
 $episodes = [
-    'Movie  1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/107968/playlist.m3u8',
-    'Movie  2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/104007/playlist.m3u8',
-    'Movie 3' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/104007/playlist.m3u8',
+    'Episode 1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98888/playlist.m3u8',
+    'Episode 2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98889/playlist.m3u8',
+    'Episode 3' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98890/playlist.m3u8',
 ];
 
 // Initialize the output content for the playlist
@@ -19,8 +19,8 @@ foreach ($episodes as $episode => $url) {
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // Check if the response contains the 'verify' token
-    if (preg_match('/verify=([a-zA-Z0-9%]+)/', $response, $matches)) {
+    // Check if the response contains the 'verify' token (126 characters)
+    if (preg_match('/verify=([a-zA-Z0-9%]{126})/', $response, $matches)) {
         // Decode the 'verify' token
         $verifyToken = urldecode($matches[1]);
 
@@ -35,7 +35,7 @@ foreach ($episodes as $episode => $url) {
         // Add the entry to the playlist
         $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n\n";
     } else {
-        echo "Failed to extract the verify token for $episode\n";
+        echo "Failed to extract the verify token for $episode. Ensure the token is 126 characters.\n";
     }
 }
 
