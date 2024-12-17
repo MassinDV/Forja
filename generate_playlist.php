@@ -1,6 +1,6 @@
 <?php
 
-// Define the input URLs and corresponding episode names
+// Define the input URLs for the episodes
 $episodes = [
     'Episode 1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98888/playlist.m3u8',
     'Episode 2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98889/playlist.m3u8',
@@ -20,9 +20,9 @@ foreach ($episodes as $episode => $url) {
     curl_close($ch);
 
     // Check if the response contains the 'verify' token
-    if (preg_match('/verify=([a-zA-Z0-9%]+)/', $response, $matches)) {
-        // Extract the full token, which might include URL encoded characters
-        $verifyToken = urldecode($matches[1]);
+    if (preg_match('/verify=([a-zA-Z0-9%=_\-&]+)/', $response, $matches)) {
+        // Extract the full token, preserving all URL encoded characters
+        $verifyToken = urldecode($matches[1]);  // Decoding URL encoding
 
         // Extract the base URL from the original URL
         $parsedUrl = parse_url($url);
