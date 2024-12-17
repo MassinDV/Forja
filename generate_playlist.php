@@ -1,42 +1,45 @@
 <?php
 
-// Define the episodes with their URLs
+// Define the input URLs and corresponding episode names
 $episodes = [
     'Episode 1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98888/playlist.m3u8',
     'Episode 2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98889/playlist.m3u8',
-    'Episode 3' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98890/playlist.m3u8'
+    'Episode 3' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98890/playlist.m3u8',
 ];
 
-// Initialize the playlist content
+// Initialize the output content for the playlist
 $playlistContent = "#EXTM3U\n\n";
 
-// Process each episode URL
+// Process each episode
 foreach ($episodes as $episode => $url) {
-    // Parse the query string to extract the embedded URL
-    $queryString = parse_url($url, PHP_URL_QUERY);
-    parse_str($queryString, $queryParams);
+    // Use CURL to fetch the content of the URL
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
 
-    if (isset($queryParams['url'])) {
-        // Extract the embedded URL with the token
-        $embeddedUrl = $queryParams['url'];
-        $verifyToken = null;
+    // Check if the response contains the 'verify' token
+    if (preg_match('/verify=([a-zA-Z0-9]+)/', $response, $matches)) {
+        $verifyToken = $matches[1];
 
-        if (strpos($embeddedUrl, '?') !== false) {
-            // Extract the 'verify' token from the embedded URL
-            parse_str(parse_url($embeddedUrl, PHP_URL_QUERY), $embeddedParams);
-            $verifyToken = $embeddedParams['verify'] ?? null;
-        }
+        // Extract the base URL from the original URL
+        $parsedUrl = parse_url($url);
+        parse_str($parsedUrl['query'], $queryParams);
+        $baseUrl = $queryParams['url'];
 
-        if ($verifyToken) {
-            // Construct the final URL with the 'verify' token
-            $finalUrl = $embeddedUrl . "?verify=" . $verifyToken;
-            // Append to the playlist content
-            $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n\n";
-        }
+        // Append the 'verify' token to the base URL
+        $finalUrl = $baseUrl . '?verify=' . $verifyToken;
+
+        // Add the entry to the playlist
+        $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n\n";
+    } else {
+        echo "Failed to extract the verify token for $episode\n";
     }
 }
 
-// Save the content to the 'playlists.m3u' file in the repository root
+// Save the playlist to a file
 file_put_contents('playlists.m3u', $playlistContent);
 
-echo "HLS playlist file 'playlists.m3u' has been updated successfully.";
+echo "Playlist has been generated and saved as playlists.m3u\n";
+
+?>
