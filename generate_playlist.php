@@ -20,8 +20,8 @@ foreach ($episodes as $episode => $url) {
     curl_close($ch);
 
     // Check if the response contains the 'verify' token
-    if (preg_match('/verify=([^\s"\'>]+)/', $response, $matches)) {
-        // Extract the full token
+    if (preg_match('/verify=([a-zA-Z0-9%]+)/', $response, $matches)) {
+        // Extract the full token, which might include URL encoded characters
         $verifyToken = urldecode($matches[1]);
 
         // Extract the base URL from the original URL
