@@ -8,11 +8,11 @@ $episodes = [
 ];
 
 // Initialize the playlist content
-$playlistContent = "#EXTM3U\n"; // M3U file header
+$playlistContent = "#EXTM3U\n\n";
 
-// Iterate through each episode URL
+// Process each episode URL
 foreach ($episodes as $episode => $url) {
-    // Parse the query string to extract the 'verify' token
+    // Parse the query string to extract the embedded URL
     $queryString = parse_url($url, PHP_URL_QUERY);
     parse_str($queryString, $queryParams);
 
@@ -31,14 +31,12 @@ foreach ($episodes as $episode => $url) {
             // Construct the final URL with the 'verify' token
             $finalUrl = $embeddedUrl . "?verify=" . $verifyToken;
             // Append to the playlist content
-            $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n";
+            $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n\n";
         }
     }
 }
 
-// Save the content to the exported_playlists.m3u file in the repository root
-file_put_contents(__DIR__ . '/exported_playlists.m3u', $playlistContent);
+// Save the content to the 'playlists.m3u' file in the repository root
+file_put_contents('playlists.m3u', $playlistContent);
 
-echo "HLS file 'exported_playlists.m3u' has been created successfully.";
-
-?>
+echo "HLS playlist file 'playlists.m3u' has been updated successfully.";
