@@ -15,6 +15,7 @@ foreach ($episodes as $episode => $url) {
     // Use CURL to fetch the content of the URL
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     $response = curl_exec($ch);
     curl_close($ch);
 
@@ -28,7 +29,7 @@ foreach ($episodes as $episode => $url) {
         parse_str($parsedUrl['query'], $queryParams);
         $baseUrl = $queryParams['url'];
 
-        // Append the 'verify' token to the base URL
+        // Append the unique 'verify' token to the base URL
         $finalUrl = $baseUrl . '?verify=' . $verifyToken;
 
         // Add the entry to the playlist
