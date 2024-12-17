@@ -1,8 +1,11 @@
 #EXTM3U
 
-#EXTINF:-1, Episode 1
-https://vod.forja.ma//vod/SNRT/98888/playlist.m3u8?verify=U2FsdGVkX1%2B2eGHzZo04mkjB3DhZliDRAPEGIJjV%2FbpE1nFHYj4XjurHSa919b%2FFHGZuLxp075kXAV1ZUlcFSz2BUgMyOhsnWc6P3cQOVWg%3D
+#EXTINF:-1, Movie  1
+https://vod.forja.ma//vod/SNRT/107968/playlist.m3u8?verify=U2FsdGVkX1%2B8XJ%2BtxAy9TaYguiSX1y3I6zP6WVtORb8P3DxxWi%2F0BkI7yQiB1hGxoiG8iN5GYRL8u%2FG8cweadzz%2FDaZDJZnXrpT%2FbdpFaMA%3D
 
-#EXTINF:-1, Episode 2
-https://vod.forja.ma//vod/SNRT/98889/playlist.m3u8?verify=U2FsdGVkX1%2Bdd%2BmMLSIk1CRVbYisTxivAwdmhmQ4gpWUO7IN0Z4gCvIAyBEvUuavt6AIrGfaq1X9%2FX2p30URhLZLnRFxil4XgjrgjJShNx0%3D
+#EXTINF:-1, Movie  2
+https://vod.forja.ma//vod/SNRT/104007/playlist.m3u8?verify=U2FsdGVkX19p0oyWZVehgSE%2FQPUmi064ZPbnnmZO7gUxVBla3bGHCFj426IBLG5kdkY7acKLVSHQVsfpIUbSGsAGMh%2BRcpBQDA%2F933qp1JU%3D
+
+#EXTINF:-1, Movie 3
+https://vod.forja.ma//vod/SNRT/104007/playlist.m3u8?verify=U2FsdGVkX1%2BW59relrVF%2F22iNNZjeWas7KnCzwZ2seSE%2FT6Ee9VZCHenrJmn8DNelAUEf%2BAgZohxOFyEyN12GhstiGMPSJGhgeCqpvVwJGc%3D
 
