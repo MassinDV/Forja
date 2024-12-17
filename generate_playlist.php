@@ -19,9 +19,9 @@ foreach ($episodes as $episode => $url) {
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // Check if the response contains the 'verify' token (126 characters)
-    if (preg_match('/verify=([a-zA-Z0-9%]{126})/', $response, $matches)) {
-        // Decode the 'verify' token
+    // Check if the response contains the 'verify' token
+    if (preg_match('/verify=([^\s"\'>]+)/', $response, $matches)) {
+        // Extract the full token
         $verifyToken = urldecode($matches[1]);
 
         // Extract the base URL from the original URL
@@ -35,7 +35,7 @@ foreach ($episodes as $episode => $url) {
         // Add the entry to the playlist
         $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n\n";
     } else {
-        echo "Failed to extract the verify token for $episode. Ensure the token is 126 characters.\n";
+        echo "Failed to extract the verify token for $episode\n";
     }
 }
 
