@@ -4,14 +4,13 @@
 $episodes = [
     'Episode 1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98888/playlist.m3u8',
     'Episode 2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98889/playlist.m3u8',
-    'Episode 3' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98890/playlist.m3u8',
 ];
 
 // Initialize the output content for the playlist
 $playlistContent = "#EXTM3U\n\n";
 
-// Process each episode
-foreach ($episodes as $episode => $url) {
+// Function to extract the verify token from the URL
+function extractToken($url) {
     // Use CURL to fetch the content of the URL
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -19,18 +18,27 @@ foreach ($episodes as $episode => $url) {
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // Check if the response contains the 'verify' token
+    // Search for the 'verify' token in the response body
     if (preg_match('/verify=([a-zA-Z0-9%=_\-&]+)/', $response, $matches)) {
-        // Extract the full token, preserving all URL encoded characters
-        $verifyToken = urldecode($matches[1]);  // Decoding URL encoding
+        return $matches[1]; // Return the token without decoding
+    }
 
-        // Extract the base URL from the original URL
+    return null; // Return null if the token is not found
+}
+
+// Process each episode
+foreach ($episodes as $episode => $url) {
+    // Extract the token using the function
+    $token = extractToken($url);
+
+    if ($token !== null) {
+        // Extract the base URL from the original URL (the part without the token)
         $parsedUrl = parse_url($url);
         parse_str($parsedUrl['query'], $queryParams);
         $baseUrl = $queryParams['url'];
 
-        // Append the unique 'verify' token to the base URL
-        $finalUrl = $baseUrl . '?verify=' . $verifyToken;
+        // Create the final URL with the token (keeping the token encoded)
+        $finalUrl = $baseUrl . '?verify=' . $token;
 
         // Add the entry to the playlist
         $playlistContent .= "#EXTINF:-1, $episode\n$finalUrl\n\n";
