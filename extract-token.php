@@ -8,7 +8,7 @@ $episodes = [
 ];
 
 // Initialize the playlist content
-$playlistContent = "";
+$playlistContent = "#EXTM3U\n"; // M3U file header
 
 // Iterate through each episode URL
 foreach ($episodes as $episode => $url) {
@@ -36,8 +36,8 @@ foreach ($episodes as $episode => $url) {
     }
 }
 
-// Save the content to a .m3u file
-file_put_contents('exported_playlists.m3u', $playlistContent);
+// Save the content to the exported_playlists.m3u file in the repository root
+file_put_contents(__DIR__ . '/exported_playlists.m3u', $playlistContent);
 
 echo "HLS file 'exported_playlists.m3u' has been created successfully.";
 
