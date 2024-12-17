@@ -2,8 +2,9 @@
 
 // Define the input URLs for the episodes
 $episodes = [
-    'Episode 1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98888/playlist.m3u8',
-    'Episode 2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/98889/playlist.m3u8',
+    'Movie  1' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/107968/playlist.m3u8',
+    'Movie  2' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/104007/playlist.m3u8',
+    'Movie 3' => 'https://vod.forja.ma/snrt?url=https://vod.forja.ma//vod/SNRT/104007/playlist.m3u8',
 ];
 
 // Initialize the output content for the playlist
