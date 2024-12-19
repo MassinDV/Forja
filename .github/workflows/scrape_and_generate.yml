@@ -1,4 +1,4 @@
-name: Scrape and Generate Playlist
+name: Update Films Playlist
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch: # Allow manual runs
 
 jobs:
-  scrape:
+  generate-playlist:
     runs-on: ubuntu-latest
 
     steps:
