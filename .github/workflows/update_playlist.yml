@@ -1,33 +1,33 @@
-name: Update Playlists
+name: Update Films Playlist
 
 on:
-  workflow_dispatch: # Allow manual triggering
-  push:               # Trigger on changes to the repository
-    branches:
-      - main          # Adjust to your default branch if different
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+  workflow_dispatch: # Allow manual runs
 
 jobs:
-  update-playlist:
+  generate-playlist:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2' # Specify your desired PHP version
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0' # Use PHP 8.0 or higher
+          extensions: curl
 
-    - name: Run PHP Script to Generate Playlist
-      run: php generate_playlist.php
+      - name: Run scraper script
+        run: php scraper.php
 
-    - name: Commit and Push Playlist File
-      run: |
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add playlists.m3u
-        git commit -m "Update playlists.m3u file"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push updated playlist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add films.m3u
+          git commit -m "Update films.m3u playlist"
+          git push
